@@ -32,8 +32,8 @@ body {
 
 .cell {
   border: solid 1px white;
-  width: 100vw;
   min-width: 128px;
+  max-width: 128px;
   height: 128px;
   text-align: center;
   font-size: 128px;
