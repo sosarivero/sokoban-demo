@@ -35,44 +35,46 @@ function redraw(newGrid) {
 }
 
 function findPlayer(grid) {
-  for (let y = 0; y < grid.length; y++) {
-    const row = grid[y];
-    if (row.includes("@")) {
-      const x = row.indexOf("@");
-      return [y, x];
-    }
-  }
-  // If player not found, return null
-  return null;
+  const y = grid.findIndex((row) => row.includes("@") || row.includes("+"));
+  const x = grid[y].includes("@") ? grid[y].indexOf("@") : grid[y].indexOf("+");
+
+  return {
+    x,
+    y,
+    above: grid[y - 1][x],
+    right: grid[y][x + 1],
+    below: grid[y + 1][x],
+    left: grid[y][x - 1],
+  };
 }
 
 function move(direction, grid) {
   const playerPos = findPlayer(grid);
-  let playerY = playerPos[0];
-  let playerX = playerPos[1];
-
+  let playerY = playerPos.y;
+  let playerX = playerPos.x;
   const key = direction.key;
+
   switch (key) {
     case "w":
-      if (grid[playerY - 1][playerX] === " ") {
+      if (playerPos.above === " ") {
         grid[playerY][playerX] = " ";
         grid[playerY - 1][playerX] = "@";
       }
       break;
     case "s":
-      if (grid[playerY + 1][playerX] === " ") {
+      if (playerPos.below === " ") {
         grid[playerY][playerX] = " ";
         grid[playerY + 1][playerX] = "@";
       }
       break;
     case "a":
-      if (grid[playerY][playerX - 1] === " ") {
+      if (playerPos.left === " ") {
         grid[playerY][playerX] = " ";
         grid[playerY][playerX - 1] = "@";
       }
       break;
     case "d":
-      if (grid[playerY][playerX + 1] === " ") {
+      if (playerPos.right === " ") {
         grid[playerY][playerX] = " ";
         grid[playerY][playerX + 1] = "@";
       }
