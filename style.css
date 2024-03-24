@@ -1,0 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#sokobanScreen {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    flex: 1;
+    background-color: black;
+    color: white;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.cell {
+    width: 100vw;
+    text-align: center;
+    font-size: 128px;
+}
