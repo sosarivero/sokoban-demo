@@ -34,6 +34,8 @@ function clear() {
 function redraw(newGrid) {
   clear();
   draw(newGrid);
+  // Checks if the grid is solved
+  checkIfSolved(grid);
 }
 
 function findPlayer(grid) {
@@ -183,8 +185,8 @@ function push(direction, playerPos, grid) {
         return;
       }
       break;
-  }
-
+    }
+    
   // Update the grid
   // Moves player to where the box was
   grid[boxY][boxX] = isGoal(grid[boxY][boxX]) ? "+" : "@";
@@ -219,5 +221,17 @@ window.addEventListener("keydown", (e) => {
     move(e, grid);
   }
 });
+
+function checkIfSolved(grid) {
+  for (let y = 0; y < grid.length; y++) {
+    for (let x = 0; x < grid[y].length; x++) {
+      if (grid[y][x] === "$") {
+        return false;
+      }
+    }
+  }
+  console.log("CLEAR!");
+  return true;
+}
 
 draw(grid);
