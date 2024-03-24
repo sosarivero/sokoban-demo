@@ -1,8 +1,18 @@
-const level = "########|#      #|#@ $   #|#   $  #|# . .  #|########";
+const level = `##########
+#### #####
+#@$  . ###
+# $   $###
+#####.  ##
+###### .##
+######.$##
+#####    #
+###      #
+##########
+`;
 
 const VALIDKEYS = ["w", "a", "s", "d"];
 
-const grid = level.split("|").map((row) => row.split(""));
+const grid = level.split("\n").map((row) => row.split(""));
 
 function draw(grid) {
   const htmlGrid = document.createElement("div");
@@ -16,6 +26,29 @@ function draw(grid) {
       // Attaches the element symbol to the cell div.
       htmlCell.textContent = cell;
       htmlCell.classList.add("cell");
+      switch (cell) {
+        case "@":
+          htmlCell.classList.add("player");
+          break;
+        case " ":
+          htmlCell.classList.add("floor");
+          break;
+        case "$":
+          htmlCell.classList.add("box");
+          break;
+        case ".":
+          htmlCell.classList.add("goal");
+          break;
+        case "#":
+          htmlCell.classList.add("wall");
+          break;
+        case "*":
+          htmlCell.classList.add("box-on-goal");
+          break;
+        case "+":
+          htmlCell.classList.add("player-on-goal");
+          break;
+      }
       // Appends the cell to the row
       htmlRow.appendChild(htmlCell);
     }
@@ -185,8 +218,8 @@ function push(direction, playerPos, grid) {
         return;
       }
       break;
-    }
-    
+  }
+
   // Update the grid
   // Moves player to where the box was
   grid[boxY][boxX] = isGoal(grid[boxY][boxX]) ? "+" : "@";

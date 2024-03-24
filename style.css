@@ -31,10 +31,32 @@ body {
 }
 
 .cell {
-  border: solid 1px white;
+  /* border: solid 1px white; */
   min-width: 128px;
   max-width: 128px;
   height: 128px;
   text-align: center;
-  font-size: 128px;
+  font-size: 0px;
+  background-image: url("./images/Grass.gif");
+}
+
+.player, .player-on-goal {
+  background-image: url("./images/Player.gif");
+  background-size: 100%;
+}
+
+.box {
+  background-image: url("./images/Box.gif");
+}
+
+.wall {
+  background-image: url("./images/wall.gif");
+}
+
+.box-on-goal {
+  background-image: url("./images/BoxOnGoal.gif");
+}
+
+.goal {
+  background-image: url("./images/Goal.gif");
 }
