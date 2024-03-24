@@ -20,4 +20,19 @@ function draw(grid) {
   document.body.appendChild(htmlGrid);
 }
 
+function findPlayer(grid) {
+  for (let y = 0; y < grid.length; y++) {
+    const row = grid[y];
+    if (row.includes("@")) {
+      const x = row.indexOf("@");
+      console.log(y);
+      return [y, x];
+    }
+  }
+  // If player not found, return null
+  return null;
+}
+
 draw(grid);
+const x = findPlayer(grid);
+console.log(x);
