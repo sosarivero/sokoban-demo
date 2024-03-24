@@ -37,7 +37,7 @@ body {
   height: 128px;
   text-align: center;
   font-size: 0px;
-  background-image: url("./images/Grass.gif");
+  background-image: url("./images/Floor.gif");
 }
 
 .player, .player-on-goal {
@@ -50,7 +50,7 @@ body {
 }
 
 .wall {
-  background-image: url("./images/wall.gif");
+  background-image: url("./images/Wall.gif");
 }
 
 .box-on-goal {
