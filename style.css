@@ -8,28 +8,32 @@
 
 body {
   font-family: monospace;
-  height: 100vh;
   background-color: black;
 }
 
 #sokobanScreen {
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  flex: 1;
-  background-color: black;
-  color: white;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: black;
+    color: white;
+    justify-content: flex-start;
+    gap: 0px;
 }
 
 .row {
   display: flex;
-  align-items: center;
   flex: 1;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  gap: 0px;
 }
 
 .cell {
   border: solid 1px white;
   width: 100vw;
+  min-width: 128px;
   height: 128px;
   text-align: center;
   font-size: 128px;
