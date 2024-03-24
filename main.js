@@ -35,12 +35,20 @@ function redraw(newGrid) {
 }
 
 function findPlayer(grid) {
-  const y = grid.findIndex((row) => row.includes("@"));
-  const x = grid[y].indexOf("@");
+  let x, y;
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      if (isPlayer(grid[i][j])) {
+        y = i;
+        x = j;
+        break;
+      }
+    }
+  }
 
   return {
-    x,
     y,
+    x,
     above: grid[y - 1][x],
     right: grid[y][x + 1],
     below: grid[y + 1][x],
@@ -70,8 +78,8 @@ function getBoxPos(playerPos, direction) {
   }
 
   return {
-    y,
     x,
+    y,
     above: grid[y - 1][x],
     right: grid[y][x + 1],
     below: grid[y + 1][x],
@@ -93,7 +101,7 @@ function move(direction, grid) {
       if (isMovable(playerPos.above)) {
         newPlayerY--;
       } else if (isBox(playerPos.above)) {
-        push("up", playerPos, grid);
+        return push("up", playerPos, grid);
       } else {
         return;
       }
@@ -102,7 +110,7 @@ function move(direction, grid) {
       if (isMovable(playerPos.below)) {
         newPlayerY++;
       } else if (isBox(playerPos.below)) {
-        push("down", playerPos, grid);
+        return push("down", playerPos, grid);
       } else {
         return;
       }
@@ -111,7 +119,7 @@ function move(direction, grid) {
       if (isMovable(playerPos.left)) {
         newPlayerX--;
       } else if (isBox(playerPos.left)) {
-        push("left", playerPos, grid);
+        return push("left", playerPos, grid);
       } else {
         return;
       }
@@ -120,7 +128,7 @@ function move(direction, grid) {
       if (isMovable(playerPos.right)) {
         newPlayerX++;
       } else if (isBox(playerPos.right)) {
-        push("right", playerPos, grid);
+        return push("right", playerPos, grid);
       } else {
         return;
       }
@@ -130,7 +138,7 @@ function move(direction, grid) {
   // Update the grid
   // Moves player to where the box was
   grid[newPlayerY][newPlayerX] = isGoal(grid[newPlayerY][newPlayerX])
-    ? "+ "
+    ? "+"
     : "@";
   // Empties the space left behind
   grid[playerY][playerX] = isGoal(grid[playerY][playerX]) ? "." : " ";
@@ -150,41 +158,43 @@ function push(direction, playerPos, grid) {
       if (isMovable(boxPos.above)) {
         newBoxY--;
       } else {
-        return; // Exit early if pushing against a wall
+        return;
       }
       break;
     case "down":
       if (isMovable(boxPos.below)) {
         newBoxY++;
       } else {
-        return; // Exit early if pushing against a wall
+        return;
       }
       break;
     case "left":
       if (isMovable(boxPos.left)) {
         newBoxX--;
       } else {
-        return; // Exit early if pushing against a wall
+        return;
       }
       break;
     case "right":
       if (isMovable(boxPos.right)) {
         newBoxX++;
       } else {
-        return; // Exit early if pushing against a wall
+        return;
       }
       break;
   }
 
   // Update the grid
   // Moves player to where the box was
-  grid[boxY][boxX] = isGoal(grid[boxY][boxX]) ? "+ " : "@";
+  grid[boxY][boxX] = isGoal(grid[boxY][boxX]) ? "+" : "@";
   // Moves box to its new destination
   grid[newBoxY][newBoxX] = isGoal(grid[newBoxY][newBoxX]) ? "*" : "$";
   // Empties the space left behind
   grid[playerPos.y][playerPos.x] = isGoal(grid[playerPos.y][playerPos.x])
     ? "."
     : " ";
+
+  redraw(grid);
 }
 
 function isGoal(cell) {
@@ -199,9 +209,12 @@ function isBox(cell) {
   return cell === "$" || cell === "*";
 }
 
+function isPlayer(cell) {
+  return cell === "@" || cell === "+";
+}
+
 window.addEventListener("keydown", (e) => {
   move(e, grid);
 });
 
 draw(grid);
-const x = findPlayer(grid);
