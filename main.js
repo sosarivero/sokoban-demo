@@ -37,55 +37,54 @@ function redraw(newGrid) {
 }
 
 function findPlayer(grid) {
-  let x, y;
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[i].length; j++) {
-      if (isPlayer(grid[i][j])) {
-        y = i;
-        x = j;
+  let playerX, playerY;
+
+  for (let y = 0; y < grid.length; y++) {
+    for (let x = 0; x < grid[y].length; x++) {
+      if (isPlayer(grid[y][x])) {
+        playerY = y;
+        playerX = x;
         break;
       }
     }
   }
 
   return {
-    y,
-    x,
-    above: grid[y - 1][x],
-    right: grid[y][x + 1],
-    below: grid[y + 1][x],
-    left: grid[y][x - 1],
+    y: playerY,
+    x: playerX,
+    above: grid[playerY - 1][playerX],
+    right: grid[playerY][playerX + 1],
+    below: grid[playerY + 1][playerX],
+    left: grid[playerY][playerX - 1],
   };
 }
 
 function getBoxPos(playerPos, direction) {
-  let x, y;
+  let boxX = playerPos.x;
+  let boxY = playerPos.y;
+
   switch (direction) {
     case "up":
-      y = playerPos.y - 1;
-      x = playerPos.x;
-      break;
-    case "right":
-      y = playerPos.y;
-      x = playerPos.x + 1;
+      boxY--;
       break;
     case "down":
-      y = playerPos.y + 1;
-      x = playerPos.x;
+      boxY++;
+      break;
+    case "right":
+      boxX++;
       break;
     case "left":
-      y = playerPos.y;
-      x = playerPos.x - 1;
+      boxX--;
       break;
   }
 
   return {
-    x,
-    y,
-    above: grid[y - 1][x],
-    right: grid[y][x + 1],
-    below: grid[y + 1][x],
-    left: grid[y][x - 1],
+    y: boxY,
+    x: boxX,
+    above: grid[boxY - 1][boxX],
+    below: grid[boxY + 1][boxX],
+    right: grid[boxY][boxX + 1],
+    left: grid[boxY][boxX - 1],
   };
 }
 
@@ -117,20 +116,20 @@ function move(direction, grid) {
         return;
       }
       break;
-    case "a":
-      if (isMovable(playerPos.left)) {
-        newPlayerX--;
-      } else if (isBox(playerPos.left)) {
-        return push("left", playerPos, grid);
-      } else {
-        return;
-      }
-      break;
     case "d":
       if (isMovable(playerPos.right)) {
         newPlayerX++;
       } else if (isBox(playerPos.right)) {
         return push("right", playerPos, grid);
+      } else {
+        return;
+      }
+      break;
+    case "a":
+      if (isMovable(playerPos.left)) {
+        newPlayerX--;
+      } else if (isBox(playerPos.left)) {
+        return push("left", playerPos, grid);
       } else {
         return;
       }
