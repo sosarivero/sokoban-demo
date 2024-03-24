@@ -1,5 +1,7 @@
 const level = "#######|#     #|#     #|# @$. #|#     #|#     #|#######";
 
+const VALIDKEYS = ["w", "a", "s", "d"];
+
 const grid = level.split("|").map((row) => row.split(""));
 
 function draw(grid) {
@@ -214,7 +216,9 @@ function isPlayer(cell) {
 }
 
 window.addEventListener("keydown", (e) => {
-  move(e, grid);
+  if (VALIDKEYS.includes(e.key)) {
+    move(e, grid);
+  }
 });
 
 draw(grid);
