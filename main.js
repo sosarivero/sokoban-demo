@@ -48,6 +48,37 @@ function findPlayer(grid) {
   };
 }
 
+function getBoxPos(playerPos, direction) {
+  let x, y;
+  switch (direction) {
+    case "up":
+      y = playerPos.y - 1;
+      x = playerPos.x;
+      break;
+    case "right":
+      y = playerPos.y;
+      x = playerPos.x + 1;
+      break;
+    case "down":
+      y = playerPos.y + 1;
+      x = playerPos.x;
+      break;
+    case "left":
+      y = playerPos.y;
+      x = playerPos.x - 1;
+      break;
+  }
+
+  return {
+    y,
+    x,
+    above: grid[y - 1][x],
+    right: grid[y][x + 1],
+    below: grid[y + 1][x],
+    left: grid[y][x - 1],
+  }
+}
+
 function move(direction, grid) {
   const playerPos = findPlayer(grid);
   let playerY = playerPos.y;
@@ -59,28 +90,72 @@ function move(direction, grid) {
       if (playerPos.above === " ") {
         grid[playerY][playerX] = " ";
         grid[playerY - 1][playerX] = "@";
+      } else if (playerPos.above === "$") {
+        push("up", playerPos, grid);
       }
       break;
     case "s":
       if (playerPos.below === " ") {
         grid[playerY][playerX] = " ";
         grid[playerY + 1][playerX] = "@";
+      } else if (playerPos.below === "$") {
+        push("down", playerPos, grid);
       }
       break;
     case "a":
       if (playerPos.left === " ") {
         grid[playerY][playerX] = " ";
         grid[playerY][playerX - 1] = "@";
+      } else if (playerPos.left === "$") {
+        push("left", playerPos, grid);
       }
       break;
     case "d":
       if (playerPos.right === " ") {
         grid[playerY][playerX] = " ";
         grid[playerY][playerX + 1] = "@";
+      } else if (playerPos.right === "$") {
+        push("right", playerPos, grid);
       }
       break;
   }
   redraw(grid);
+}
+
+function push(direction, playerPos, grid) {
+  const boxPos = getBoxPos(playerPos, direction);
+  let boxY = boxPos.y;
+  let boxX = boxPos.x;
+  switch (direction) {
+    case "up":
+      if (boxPos.above === " ") {
+        grid[boxY][boxX] = "@";
+        grid[boxY - 1][boxX] = "$";
+        grid[boxY + 1][boxX] = " ";
+      }
+      break;
+    case "down":
+      if (boxPos.below === " ") {
+        grid[boxY][boxX] = "@";
+        grid[boxY + 1][boxX] = "$";
+        grid[boxY -1][boxX] = " ";
+      }
+      break;
+    case "left":
+      if (boxPos.left === " ") {
+        grid[boxY][boxX] = "@";
+        grid[boxY][boxX - 1] = "$";
+        grid[boxY][boxX + 1] = " ";
+      }
+      break;
+    case "right":
+      if (boxPos.right === " ") {
+        grid[boxY][boxX] = "@";
+        grid[boxY][boxX + 1] = "$";
+        grid[boxY][boxX - 1] = " ";
+      }
+      break;
+  }
 }
 
 window.addEventListener("keydown", (e) => {
